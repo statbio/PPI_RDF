@@ -7,7 +7,9 @@ positional arguments:
 
 optional arguments:
   --help, -h            				show this help message and exit
+  
   --biogrid DATAFILE				import biogrid MITAB data
+  
   --intact DATAFILE     				uniprot2entrez.txt must exist in path
   --genenames Entrez2Gene.txt		import genenames from entrez ids
   --homologene homologene.data		add homologene relation between interactors
