@@ -1,0 +1,78 @@
+-------------------------------------------------------------------------------
+Getting interaction, genenames, pubmed id, and author
+-------------------------------------------------------------------------------
+PREFIX ppi: <http://ppi2rdf.org/proteins#>
+SELECT ?interaction ?genename ?pubmed ?author 
+WHERE {
+	?interaction ppi:hasInteractor ?interactor ;
+		ppi:hasReference ?pubmed .
+	?pubmed ppi:firstAuthor ?author .
+	?interactor ppi:geneName ?genename .
+} LIMIT 10
+
+-------------------------------------------------------------------------------
+Getting DISTINCT human interactors
+-------------------------------------------------------------------------------
+
+PREFIX ppi: <http://ppi2rdf.org/proteins#>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+SELECT DISTINCT ?entA ?entB
+WHERE {
+ ?A ppi:taxId "9606".
+ ?B ppi:taxId "9606".
+ ?interaction ppi:hasInteractor ?A, ?B.
+ FILTER(?A != ?B)
+ ?A ppi:entrez ?entA .
+ ?B ppi:entrez ?entB .
+ FILTER(xsd:integer(?entA) < xsd:integer(?entB))
+}
+
+# To filter based on specific genes
+VALUES ?entA { "54476" "54862" "55074" }
+
+
+-------------------------------------------------------------------------------
+Loading PSD genes for interaction network:
+ -  filters post-synaptic density interactors that are either human genes 
+	or are mouse or rat homologs
+ - 	gets interactions with those interactors
+-------------------------------------------------------------------------------
+
+PREFIX ppi: <http://ppi2rdf.org/proteins#>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+SELECT DISTINCT ?entA ?entB ?geneA ?geneB ?taxA ?taxB
+WHERE {
+ ?interaction ppi:hasInteractor ?A, ?B .
+ {?A a ppi:psdGene; ppi:taxId "9606".}
+ UNION
+ {?A ppi:taxId "10090"; ppi:hasHomologene ?homolog . ?homolog a ppi:psdGene .}
+ UNION
+ {?A ppi:taxId "10116"; ppi:hasHomologene ?homolog . ?homolog a ppi:psdGene .}
+
+ {?B a ppi:psdGene; ppi:taxId "9606".}
+ UNION
+ {?B ppi:taxId "10090"; ppi:hasHomologene ?homolog . ?homolog a ppi:psdGene .}
+ UNION
+ {?B ppi:taxId "10116"; ppi:hasHomologene ?homolog . ?homolog a ppi:psdGene .}
+
+ ?A ppi:entrez ?entA .
+ ?B ppi:entrez ?entB .
+ FILTER(xsd:integer(?entA) < xsd:integer(?entB))
+ ?A ppi:taxId ?taxA; ppi:geneName ?geneA .
+ ?B ppi:taxId ?taxB; ppi:geneName ?geneB .
+}
+
+-------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
