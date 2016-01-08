@@ -3,9 +3,11 @@
 Provide data file from one or more sources in PSI-MI format. If no data files, only schema will output.
 
 positional arguments:
+
   outfile               					provide output filename (i.e. out.nt)
 
 optional arguments:
+
   --help, -h            				show this help message and exit
   
   --biogrid DATAFILE				import biogrid MITAB data
