@@ -11,9 +11,13 @@ optional arguments:
   --biogrid DATAFILE				import biogrid MITAB data
   
   --intact DATAFILE     				uniprot2entrez.txt must exist in path
+  
   --genenames Entrez2Gene.txt		import genenames from entrez ids
+  
   --homologene homologene.data		add homologene relation between interactors
+  
   --psd psd_genes.txt   			adds psd triples to postsynaptic density entrez ids
+  
   --filter genes.txt   				filters data to entrez ids in newline delimited file
   
   
